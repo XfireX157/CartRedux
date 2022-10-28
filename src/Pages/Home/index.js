@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import Cards from '../../Components/Cards'
-
+import {BsFillCartFill} from 'react-icons/bs'
 
 export default function Home() {
 
@@ -8,7 +8,7 @@ export default function Home() {
     
     return(
         <div>
-            {list.map((item) => <Cards key={item.id} {...item} children="AddCar" /> )}
+            {list.map((item) => <Cards key={item.id} {...item} children={<BsFillCartFill/>} /> )}
         </div>
     )
 }

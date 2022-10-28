@@ -7,16 +7,32 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         CartAdd: (state, {payload}) => {
-            const temItem = state.find(product => product.id === payload)
-        
+          const temItem = state.find(product => product.id === payload)
           if(!temItem) return [
-            ...state, {payload}
+            ...state, {id: payload, qtd: 1}
           ]
-          return state.filter(item => item.id !== payload)
-        }
+          else{
+            temItem.qtd += 1
+          }
+        },
+
+        CartRemove: (state, {payload}) => {
+          const temItem = state.find(product => product.id === payload)
+
+          if(temItem){
+            return state.filter(item => item.id !== payload)
+          }
+        } ,
+
+        AddQtd: (state, {payload}) => {
+          state = state.map(item => {
+            if(item.id === payload.id) item.qtd += payload.qtd
+            return item
+          })
+        },
     }
 })
 
-export const {CartAdd} = cartSlice.actions 
+export const {CartAdd, CartRemove, AddQtd} = cartSlice.actions 
 
 export default cartSlice.reducer

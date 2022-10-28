@@ -1,22 +1,31 @@
 import {useSelector} from 'react-redux'
 import Cards from '../../Components/Cards'
-
+import {BsTrashFill} from 'react-icons/bs'
 
 export default function Cart() {
-
-    const cartItens = useSelector(state => {
-   
-        const carrinho = state.cart.filter(item => item.id === state.list.id)
-        return carrinho
+    
+    const carrinho = useSelector(state => {
+    let total = 0
+    const cartItens = state.cart.reduce((itens, itensNoCarrinho) => {
+        const list = state.list.find(item => item.id === itensNoCarrinho.id)
+        total += (list.price * itensNoCarrinho.qtd)
+        itens.push({
+            ...list,
+            qtd: itensNoCarrinho.qtd
+        })
+        return itens
+    }, [])
+        return {carrinho: cartItens, total}
     })
 
-    console.log(cartItens)
 
     return(
         <div>
             <div>
-               {cartItens.map((item) => <Cards key={item.id} {...item} />)}
+               {carrinho.carrinho.map((item) => <Cards key={item.id} {...item} children={<BsTrashFill/>} />)}
             </div>
+
+            <span>SubTotal R${carrinho.total}</span>
         </div>
     )
 }
